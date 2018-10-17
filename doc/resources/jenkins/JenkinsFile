@@ -1,0 +1,18 @@
+node {
+    stage('Init') {
+        checkout scm
+    }
+
+    stage('Build') {
+        sh 'mvn clean package'
+    }
+
+    stage('Publish') {
+        azureFunctionAppPublish appName: 'odd-or-even', 
+                                azureCredentialsId: 'sp-fix', 
+                                filePath: '**/*.json,**/*.jar,bin/*,HttpTrigger-Java/*', 
+                                resourceGroup: 'function-demo-1', 
+                                sourceDirectory: 'target/azure-functions/odd-or-even-function-sample', 
+                                targetDirectory: ''
+    }
+}
