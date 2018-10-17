@@ -10,9 +10,9 @@ node {
     stage('Publish') {
         azureFunctionAppPublish appName: 'odd-or-even', 
                                 azureCredentialsId: 'sp-fix', 
-                                filePath: '**/*.json,**/*.jar', 
+                                filePath: '**/*.json,**/*.jar,bin/*,HttpTrigger-Java/*', 
                                 resourceGroup: 'function-demo-1', 
-                                sourceDirectory: 'odd-or-even-function/target/azure-functions/odd-or-even-function-sample', 
+                                sourceDirectory: 'target/azure-functions/odd-or-even-function-sample', 
                                 targetDirectory: ''
     }
 }
