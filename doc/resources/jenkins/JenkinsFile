@@ -8,11 +8,10 @@ node {
     }
 
     stage('Publish') {
-        azureFunctionAppPublish appName: 'odd-or-even', 
-                                azureCredentialsId: 'sp-fix', 
+        azureFunctionAppPublish appName: env.FUNCTION_NAME, 
+                                azureCredentialsId: env.AZURE_CRED_ID, 
                                 filePath: '**/*.json,**/*.jar,bin/*,HttpTrigger-Java/*', 
-                                resourceGroup: 'function-demo-1', 
-                                sourceDirectory: 'target/azure-functions/odd-or-even-function-sample', 
-                                targetDirectory: ''
+                                resourceGroup: env.RES_GROUP, 
+                                sourceDirectory: 'target/azure-functions/odd-or-even-function-sample'
     }
 }
