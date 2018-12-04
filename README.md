@@ -23,11 +23,11 @@ Here's briefly how you can create a function app using Azure CLI:
 
 ## <a name="prepare"></a>Prepare Jenkins server
 
-1. Deploy a [Jenkins Master](https://aka.ms/jenkins-on-azure) on Azure. If you don't have one, view the [quickstart](https://docs.microsoft.com/en-us/azure/jenkins/install-jenkins-solution-template) to set up one in Azure.
+1. Deploy a [Jenkins Master](https://aka.ms/jenkins-on-azure) on Azure. If you don't have one, view this [quickstart](https://docs.microsoft.com/en-us/azure/jenkins/install-jenkins-solution-template) to set up one in Azure.
 
 1. Sign in to the Jenkins instance with SSH and run the following commands:
     *  Install maven using command: ``` sudo apt install -y maven.```
-    * Install [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local). E.g., for Ubuntu 16.04 / Linux Mint 18, run the follow to install :
+    * Install [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local). E.g., for Ubuntu 16.04 / Linux Mint 18, run the follow commands to install :
         * ```wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb```
         * ```sudo dpkg -i packages-microsoft-prod.deb```
         * ```sudo apt-get update```
@@ -38,20 +38,21 @@ then search and install the following plugins if not already installed: Azure Fu
 
 1. Jenkins needs an Azure service principal for autheticating and accessing Azure resources. Refer to the [Crease service principal](https://docs.microsoft.com/en-us/azure/jenkins/tutorial-jenkins-deploy-web-app-azure-app-service#create-service-principal) section in the Deploy to Azure App Service tutorial.
 
-1. Then using the Azure service principal, add a "Microsoft Azure Service Principal" credential type in Jenkins. Refer to the [Add Service principal](https://docs.microsoft.com/en-us/azure/jenkins/tutorial-jenkins-deploy-web-app-azure-app-service#add-service-principal-to-jenkins) section in the Deploy to Azure App Service tutorial.
+1. Then using the Azure service principal, add a "Microsoft Azure Service Principal" credential type in Jenkins. Refer to the [Add Service principal](https://docs.microsoft.com/en-us/azure/jenkins/tutorial-jenkins-deploy-web-app-azure-app-service#add-service-principal-to-jenkins) section in the Deploy to Azure App Service tutorial. This is the [your crendential id of service principal] mentioned in Step 2 under "Create Job"
 
 
 ## <a name="create-job"></a>Create job
 
 1. Add a new job in type "Pipeline".
 
-1. Enable "Prepare an environment for the run", and put the following environment variables
+1. Enable "Prepare an environment for the run", and add the following environment variables
    in "Properties Content":
     ```
     AZURE_CRED_ID=[your credential id of service principal]
-    RES_GROUP=[your resource group of the web app]
+    RES_GROUP=[your resource group of the function app]
     FUNCTION_NAME=[the name of the function]
     ```
+    For [the name of the function], make sure you use the same name when you used to create the function app in Azure.
 
 1. Choose "Pipeline script from SCM" in "Pipeline" -> "Definition".
 
@@ -64,6 +65,7 @@ then search and install the following plugins if not already installed: Azure Fu
 
 1. Open your favorite browser and input `https://<function_name>.azurewebsites.net/api/HttpTrigger-Java?code=<key>&number=<input_number>` to trigger the function. You will get the output like `The number 365 is Odd.`.
 
+    Please refer to [Azure Function HTTP triggers and bindings](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook#authorization-keys) to get the authorization key.
 
 ## <a name="clean-up"></a>Clean Up Resources
 
