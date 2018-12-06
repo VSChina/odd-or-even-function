@@ -18,7 +18,7 @@ The Azure Function plugin does not provision the function app if it doesn't alre
 Here's briefly how you can create a function app using Azure CLI:
 * create a resource group by doing: ```az group create --name myResourceGroup --location eastus```
 * create an Azure storage account: ```az storage account create --name <storage_name> --location eastus --resource-group myResourceGroup --sku Standard_LRS```
-* create a function app by doing: ```az functionapp create --resource-group myResourceGroup --consumption-plan-location westeurope --name <app_name> --storage-account  <storage_name>```
+* create a function app by doing: ```az functionapp create --resource-group myResourceGroup --consumption-plan-location eastus --name <app_name> --storage-account  <storage_name>```
 * Update to version 2.x runtime: ```az functionapp config appsettings set --name <function_app> --resource-group <my_resource_group> --settings FUNCTIONS_EXTENSION_VERSION=~2```
 
 ## <a name="prepare"></a>Prepare Jenkins server
