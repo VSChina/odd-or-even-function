@@ -24,7 +24,7 @@ node {
                 az account set -s $AZURE_SUBSCRIPTION_ID
             '''
             }
-            sh 'az functionapp deployment source config --branch master --manual-integration --name oddeven --repo-url https://github.com/puicchan/odd-or-even-function --resource-group pcfunctionrg'
+            sh 'sh 'func azure functionapp publish oddeven''
             sh 'az logout'
         }
     }
