@@ -25,7 +25,7 @@ node {
             '''
             }
             //sh 'func azure functionapp publish oddeven --java --force'
-            sh 'mvn azure-functions:deploy'
+            sh 'mvn azure-functions:deploy -X'
             sh 'az logout'
         }
     }
