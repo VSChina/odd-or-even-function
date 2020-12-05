@@ -24,7 +24,8 @@ node {
                 az account set -s $AZURE_SUBSCRIPTION_ID
             '''
             }
-            sh 'az functionapp create --name oddeven --storage-account pcfuncsa --consumption-plan-location eastus --resource-group pcfunctionrg --deployment-source-url https://github.com/puicchan/odd-or-even-function --deployment-source-branch master --functions-version 2'
+            sh 'az functionapp deployment source config-local-git -g pcfunctionrg -n oddeven'
+            sh 'git remote add azure https://github.com/puicchan/odd-or-even-function' 
             sh 'az logout'
         }
     }
