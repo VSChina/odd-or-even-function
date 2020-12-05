@@ -1,17 +1,31 @@
 node {
-    stage('Init') {
-        checkout scm
-    }
+    withEnv(['AZURE_SUBSCRIPTION_ID=f64d4ee8-be94-457d-ba26-3fa6b6506cef',
+            'AZURE_TENANT_ID=72f988bf-86f1-41af-91ab-2d7cd011db47']) {
+        stage('Init') {
+            checkout scm
+        }
 
-    stage('Build') {
-        sh 'mvn clean package'
-    }
+        stage('Build') {
+            sh 'mvn clean package'
+        }
 
-    stage('Publish') {
-        azureFunctionAppPublish appName: env.FUNCTION_NAME, 
-                                azureCredentialsId: env.AZURE_CRED_ID, 
-                                filePath: '**/*.json,**/*.jar,bin/*,HttpTrigger-Java/*', 
-                                resourceGroup: env.RES_GROUP, 
-                                sourceDirectory: 'target/azure-functions/odd-or-even-function-sample'
+        stage('Publish') {
+        //azureFunctionAppPublish appName: env.FUNCTION_NAME, 
+        //                        azureCredentialsId: env.AZURE_CRED_ID, 
+        //                        filePath: '**/*.json,**/*.jar,bin/*,HttpTrigger-Java/*', 
+        //                        resourceGroup: env.RES_GROUP, 
+        //                        sourceDirectory: 'target/azure-functions/odd-or-even-function-sample'
+            def resourceGroup = 'pcAppService' 
+            def webAppName = 'pcapp20'
+            // login Azure
+            withCredentials([usernamePassword(credentialsId: 'azuresp', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
+            sh '''
+                az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
+                az account set -s $AZURE_SUBSCRIPTION_ID
+            '''
+            }
+            sh 'az functionapp create --name oddeven --storage-account pcfuncsa --consumption-plan-location eastus --resource-group pcfunctionrg --deployment-source-url https://github.com/puicchan/odd-or-even-function --deployment-source-branch master --functions-version 2'
+            sh 'az logout'
+        }
     }
 }
