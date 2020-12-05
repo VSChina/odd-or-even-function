@@ -24,7 +24,7 @@ node {
                 az account set -s $AZURE_SUBSCRIPTION_ID
             '''
             }
-            sh 'sh func azure functionapp publish oddeven'
+            sh 'func azure functionapp publish oddeven'
             sh 'az logout'
         }
     }
