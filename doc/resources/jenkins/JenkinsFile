@@ -10,11 +10,6 @@ node {
         }
 
         stage('Publish') {
-        //azureFunctionAppPublish appName: env.FUNCTION_NAME, 
-        //                        azureCredentialsId: env.AZURE_CRED_ID, 
-        //                        filePath: '**/*.json,**/*.jar,bin/*,HttpTrigger-Java/*', 
-        //                        resourceGroup: env.RES_GROUP, 
-        //                        sourceDirectory: 'target/azure-functions/odd-or-even-function-sample'
             def resourceGroup = 'pcAppService' 
             def webAppName = 'pcapp20'
             // login Azure
@@ -24,8 +19,9 @@ node {
                 az account set -s $AZURE_SUBSCRIPTION_ID
             '''
             }
-            sh 'func azure functionapp publish oddeven --java --force'
-            //sh 'mvn azure-functions:deploy -X'
+            //sh 'func azure functionapp publish oddeven --java --force'
+            sh 'zip -r archive.zip $PWD/target/azure-functions/odd-or-even-function-sample/*.json $PWD/target/azure-functions/odd-or-even-function-sample/*.jar $PWD/target/azure-functions/odd-or-even-function-sample/HttpTrigger-Java/*'
+            sh 'az functionapp deployment source config-zip -g pcfunc20rg -n oddeven20 --src $PWD/archive.zip'
             sh 'az logout'
         }
     }
