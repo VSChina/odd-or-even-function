@@ -20,7 +20,7 @@ node {
             '''
             }
             //sh 'func azure functionapp publish oddeven --java --force'
-            sh 'cd $PWD/target/azyre-functions/odd-or-even-function-sample'
+            sh 'cd $PWD/target/azure-functions/odd-or-even-function-sample'
             sh 'zip archive.zip ./*'
             sh 'az functionapp deployment source config-zip -g pcfunc20rg -n oddeven20 --src archive.zip'
             sh 'az logout'
