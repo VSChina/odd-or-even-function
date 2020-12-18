@@ -1,6 +1,6 @@
 node {
-    withEnv(['AZURE_SUBSCRIPTION_ID=f64d4ee8-be94-457d-ba26-3fa6b6506cef',
-            'AZURE_TENANT_ID=72f988bf-86f1-41af-91ab-2d7cd011db47']) {
+    withEnv(['AZURE_SUBSCRIPTION_ID=99999999-9999-9999-9999-999999999999',
+            'AZURE_TENANT_ID=99999999-9999-9999-9999-999999999999']) {
         stage('Init') {
             cleanWs()
             checkout scm
@@ -11,8 +11,8 @@ node {
         }
 
         stage('Publish') {
-            def RESOURCE_GROUP = 'pcfunc21rg' 
-            def FUNC_NAME = 'oddeven21'
+            def RESOURCE_GROUP = '<resource_group>' 
+            def FUNC_NAME = '<function_app>'
             // login Azure
             withCredentials([usernamePassword(credentialsId: 'azuresp', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
             sh '''
@@ -25,4 +25,3 @@ node {
             sh 'az logout'
         }
     }
-}
