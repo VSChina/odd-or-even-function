@@ -2,6 +2,7 @@ node {
     withEnv(['AZURE_SUBSCRIPTION_ID=f64d4ee8-be94-457d-ba26-3fa6b6506cef',
             'AZURE_TENANT_ID=72f988bf-86f1-41af-91ab-2d7cd011db47']) {
         stage('Init') {
+            cleanWs()
             checkout scm
         }
 
@@ -10,8 +11,8 @@ node {
         }
 
         stage('Publish') {
-            def resourceGroup = 'pcAppService' 
-            def webAppName = 'pcapp20'
+            def RESOURCE_GROUP = 'pcfunc21rg' 
+            def FUNC_NAME = 'oddeven21'
             // login Azure
             withCredentials([usernamePassword(credentialsId: 'azuresp', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
             sh '''
@@ -19,10 +20,8 @@ node {
                 az account set -s $AZURE_SUBSCRIPTION_ID
             '''
             }
-            //sh 'func azure functionapp publish oddeven --java --force'
-            sh 'cd $PWD/target/azure-functions/odd-or-even-function-sample'
-            sh 'zip archive.zip ./*'
-            sh 'az functionapp deployment source config-zip -g pcfunc20rg -n oddeven20 --src archive.zip'
+            sh 'cd $PWD/target/azure-functions/odd-or-even-function-sample && zip -r ../../../archive.zip ./* && cd -'
+            sh "az functionapp deployment source config-zip -g $RESOURCE_GROUP -n $FUNC_NAME --src archive.zip"
             sh 'az logout'
         }
     }
