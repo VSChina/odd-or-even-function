@@ -1,6 +1,7 @@
+  
 node {
-    withEnv(['AZURE_SUBSCRIPTION_ID=99999999-9999-9999-9999-999999999999',
-            'AZURE_TENANT_ID=99999999-9999-9999-9999-999999999999']) {
+    withEnv(['AZURE_SUBSCRIPTION_ID=ee22c8f0-93df-4b47-925a-d337fef522fe',
+            'AZURE_TENANT_ID=e4e34038-ea1f-4882-b6e8-ccd776459ca0']) {
         stage('Init') {
             cleanWs()
             checkout scm
@@ -11,13 +12,13 @@ node {
         }
 
         stage('Publish') {
-            def RESOURCE_GROUP = '<resource_group>' 
-            def FUNC_NAME = '<function_app>'
+            def RESOURCE_GROUP = '<krishan_Rg>' 
+            def FUNC_NAME = '<webapp44>'
             // login Azure
             withCredentials([usernamePassword(credentialsId: 'azuresp', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
             sh '''
-                az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
-                az account set -s $AZURE_SUBSCRIPTION_ID
+                az login --service-principal -u $e29729c0-be12-40ae-b613-537c16f90fba -p $F2jy9eP4FIu~zUT0n.6yUN87.UuOj~_vvp -t $e4e34038-ea1f-4882-b6e8-ccd776459ca0
+                az account set -s $ee22c8f0-93df-4b47-925a-d337fef522fe
             '''
             }
             sh 'cd $PWD/target/azure-functions/odd-or-even-function-sample && zip -r ../../../archive.zip ./* && cd -'
