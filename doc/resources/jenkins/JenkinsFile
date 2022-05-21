@@ -1,6 +1,6 @@
 node {
-    withEnv(['AZURE_SUBSCRIPTION_ID=99999999-9999-9999-9999-999999999999',
-            'AZURE_TENANT_ID=99999999-9999-9999-9999-999999999999']) {
+    withEnv(['AZURE_SUBSCRIPTION_ID=b0a5a808-20e1-4a43-a802-5156981d2c3c',
+            'AZURE_TENANT_ID=b41b72d0-4e9f-4c26-8a69-f949f367c91d']) {
         stage('Init') {
             cleanWs()
             checkout scm
@@ -11,8 +11,8 @@ node {
         }
 
         stage('Publish') {
-            def RESOURCE_GROUP = '<resource_group>' 
-            def FUNC_NAME = '<function_app>'
+            def RESOURCE_GROUP = 'demo-rg' 
+            def FUNC_NAME = 'azfuncapp0011'
             // login Azure
             withCredentials([usernamePassword(credentialsId: 'azuresp', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
             sh '''
